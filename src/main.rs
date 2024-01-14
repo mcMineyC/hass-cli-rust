@@ -1,4 +1,5 @@
 use std::fs;
+use toml::Table;
 use reqwest;
 use reqwest::header::*;
 use std::time::Duration;
@@ -31,4 +32,9 @@ async fn light(name: &str, state: &str){
                                             .send()
                                             .await.unwrap().text().await.unwrap();
     println!("Response: {:?}", response);
+}
+
+fn load_config() -> Result<Table, toml::de::Error> {
+    let contents = fs::read_to_string("config.toml").unwrap();
+    toml::from_str(&contents)
 }
